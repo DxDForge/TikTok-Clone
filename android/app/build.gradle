@@ -1,0 +1,48 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id 'com.google.gms.google-services' // Ensure Google services plugin is applied here
+    id "dev.flutter.flutter-gradle-plugin" // Flutter plugin should come after others
+}
+
+android {
+    namespace = "com.example.news_proved"
+    compileSdkVersion 34 // Use your Flutter compileSdkVersion here
+    ndkVersion "23.1.7779620" // Match this with your Flutter NDK version
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId "com.example.news_proved"
+        minSdkVersion 23 // Ensure compatibility with Firebase
+        targetSdkVersion 34 // Use your Flutter targetSdkVersion here
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true // Enable MultiDex if needed
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false // Turn off minify to avoid shrinking
+            shrinkResources false // Disables resource shrinking
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+dependencies {
+    // Firebase dependencies with BOM (Bill of Materials)
+    implementation platform('com.google.firebase:firebase-bom:32.0.0') // Make sure BOM is up-to-date
+    implementation 'com.google.firebase:firebase-analytics' // Include required Firebase services
+}
+
+// Apply Google services plugin
+apply plugin: 'com.google.gms.google-services'

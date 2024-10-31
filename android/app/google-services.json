@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "397987935654",
+    "project_id": "news-proved",
+    "storage_bucket": "news-proved.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397987935654:android:bdaf4be2be22475e238b67",
+        "android_client_info": {
+          "package_name": "com.example.news_proved"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt_YgwvtxJt7a4GxDF--_AqasvkUlYhIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397987935654:android:f98729355fbfaaa4238b67",
+        "android_client_info": {
+          "package_name": "com.example.tictok"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt_YgwvtxJt7a4GxDF--_AqasvkUlYhIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
