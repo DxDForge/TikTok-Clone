@@ -2,76 +2,109 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_proved/Controller/comment_controller.dart';
 import 'package:news_proved/constant.dart';
+import 'package:timeago/timeago.dart' as tago; // For formatting dates
 
 class CommentScreen extends StatelessWidget {
   final String postId;
-  CommentScreen({super.key,required this.postId});
+  CommentScreen({Key? key, required this.postId}) : super(key: key);
 
-  final TextEditingController commentControllerTxtEditing = TextEditingController();
+  final TextEditingController commentControllerTxtEditing =
+      TextEditingController();
   final CommentController commentController = Get.put(CommentController());
 
   @override
   Widget build(BuildContext context) {
+    // Update the post ID to fetch relevant comments
     commentController.updatePostId(postId);
+
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        title: const Text("Comments", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Column(
         children: [
-          // Using Expanded directly instead of wrapping in SingleChildScrollView
+          // Comments List
           Expanded(
-            child: ListView.builder(
-              itemCount: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return const ListTile(
-                  title: Row(
-                    children: [
-                      Text(
-                        'UserName',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        'This is a comment',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
+            child: Obx(() {
+              // Show a message if there are no comments
+              if (commentController.comment.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'No comments yet. Be the first to comment!',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
-                  subtitle: Row(
-                    children: [
-                      Text(
-                        '2 days ago',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w200,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        '2 likes',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w200,
-                        ),
-                      ),
-                    ],
-                  ),
-                  leading: Icon(Icons.person),
-                  trailing: Icon(Icons.favorite),
                 );
-              },
-            ),
+              }
+
+              return ListView.builder(
+                itemCount: commentController.comment.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final eachComment = commentController.comment[index];
+                  // Format the date
+                  // String formattedDate = DateFormat('MMM d, yyyy').format(comment.datePublished);
+
+                  return ListTile(
+                    title: Row(
+                      children: [
+                        Text(
+                          eachComment.userName,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            eachComment.comment,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    subtitle: Row(
+                      children: [
+                        Text(
+                          tago.format(eachComment.datePublished
+                              .toDate()), // Dynamically formatted date
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '${eachComment.likeCount.length} likes',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(eachComment.profilePic),
+                      backgroundColor: Colors.grey,
+                    ),
+                    trailing: InkWell(
+                        onTap: () =>
+                            commentController.likeComment(eachComment.id),
+                        child:  Icon(Icons.favorite,
+                        color: eachComment.likeCount.contains(authController.currentUser!.uid)? Colors.red:Colors.white,
+                  )));
+                },
+              );
+            }),
           ),
-          const Divider(),
+          const Divider(color: Colors.grey),
+          // Comment Input Section
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -85,20 +118,25 @@ class CommentScreen extends StatelessWidget {
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.red),
                       ),
+                      labelStyle: TextStyle(color: Colors.red),
                     ),
-                    onChanged: (value) {
-                      // Handle comment input
-                    },
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.send, color: Colors.red),
-                  onPressed: () 
-                  {
-                    commentController.addComment(commentControllerTxtEditing.text);
-                    commentControllerTxtEditing.clear();
-
-  }),
+                  onPressed: () {
+                    if (commentControllerTxtEditing.text.trim().isNotEmpty) {
+                      commentController
+                          .addComment(commentControllerTxtEditing.text.trim());
+                      commentControllerTxtEditing
+                          .clear(); // Clear text after posting
+                    } else {
+                      Get.snackbar('Empty Comment',
+                          'Please write something before posting.');
+                    }
+                  },
+                ),
               ],
             ),
           ),

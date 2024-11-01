@@ -5,12 +5,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:news_proved/Controller/auth_controller.dart';
 import 'package:news_proved/View/Screens/add_video_screen.dart';
+import 'package:news_proved/View/Screens/search_screen.dart';
 import 'package:news_proved/View/Screens/video_screen.dart';
 
 //page INDEX
 var page =[
    VideoScreen(),
-  const Text('Search screen'),
+  const SearchScreen(),
 
   const AddVideoScreen(),
   const Text('Message Screen'),

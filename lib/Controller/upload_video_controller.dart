@@ -113,8 +113,10 @@ class UploadVideoController extends GetxController {
           .doc('video $len')
           .set(video.toMap());
 
+      
       // Notify success
       uploadStatus.value = "Upload successful!";
+      Get.back();
       Get.snackbar(
         "Upload Successful",
         "Your video has been uploaded successfully.",
@@ -126,7 +128,7 @@ class UploadVideoController extends GetxController {
       );
 
       // Navigate back to the previous screen after upload completes
-      Get.back();
+      
     } catch (e) {
       uploadStatus.value = "Upload failed: ${e.toString()}";
       Get.snackbar(
