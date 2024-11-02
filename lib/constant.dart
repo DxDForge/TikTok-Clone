@@ -11,7 +11,7 @@ import 'package:news_proved/View/Screens/video_screen.dart';
 //page INDEX
 var page =[
    VideoScreen(),
-  const SearchScreen(),
+   SearchScreen(),
 
   const AddVideoScreen(),
   const Text('Message Screen'),
