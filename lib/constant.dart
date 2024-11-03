@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:news_proved/Controller/auth_controller.dart';
 import 'package:news_proved/View/Screens/add_video_screen.dart';
+import 'package:news_proved/View/Screens/message_screen.dart';
+import 'package:news_proved/View/Screens/profile_screen.dart';
 import 'package:news_proved/View/Screens/search_screen.dart';
 import 'package:news_proved/View/Screens/video_screen.dart';
 
@@ -12,10 +14,9 @@ import 'package:news_proved/View/Screens/video_screen.dart';
 var page =[
    VideoScreen(),
    SearchScreen(),
-
   const AddVideoScreen(),
-  const Text('Message Screen'),
-  const Text('Person Screen'),
+  const MessageScreen(),
+   ProfileScreen(uid: authController.user.uid),
 ];
 // COLORS
 const backgroundColor = Colors.black;
