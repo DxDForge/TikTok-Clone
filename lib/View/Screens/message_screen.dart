@@ -10,7 +10,7 @@ class MessageScreen extends StatelessWidget {
         title: const Text('Message Screen'),
       ),
       body: const Center(
-        child:  Text('Welcome to the Message Screen!\n   \nYet need to create'),
+        child:  Text('WorKing!!!',style: TextStyle(color: Colors.amber,fontWeight: FontWeight.bold ,fontSize: 30 ),),
       ),
     );
   }

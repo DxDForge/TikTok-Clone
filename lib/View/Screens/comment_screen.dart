@@ -97,7 +97,8 @@ class CommentScreen extends StatelessWidget {
                         onTap: () =>
                             commentController.likeComment(eachComment.id),
                         child:  Icon(Icons.favorite,
-                        color: eachComment.likeCount.contains(authController.currentUser!.uid)? Colors.red:Colors.white,
+                        color: eachComment.likeCount.contains(
+                          authController.user.uid)? Colors.red:Colors.white,
                   )));
                 },
               );

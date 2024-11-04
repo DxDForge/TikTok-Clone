@@ -5,8 +5,9 @@ import 'package:news_proved/Controller/auth_controller.dart';
 import 'package:news_proved/View/Screens/auth/sign_up.dart';
 
 void main()async {
- WidgetsFlutterBinding.ensureInitialized();
- await Firebase.initializeApp().then((onValue)=>Get.put(AuthController()));
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp().then((onValue)=>Get.put(AuthController()));
   runApp(const MyApp());
 }
 

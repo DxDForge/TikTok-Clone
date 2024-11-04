@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
          onTap: (idx) {
            setState(() {
              pageIdx = idx;
-             print(pageIdx);
+            //  print(pageIdx);
            });
          },
       currentIndex: pageIdx, 

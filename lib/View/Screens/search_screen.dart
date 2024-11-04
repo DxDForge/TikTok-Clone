@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_proved/View/Screens/profile_screen.dart';
 import 'package:news_proved/constant.dart';
-import 'package:news_proved/Controller/search_controll.dart' as custom;
+import 'package:news_proved/Controller/search_controller.dart' as custom;
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
@@ -57,7 +57,7 @@ class SearchScreen extends StatelessWidget {
             return InkWell(
               onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=> ProfileScreen(uid: user.uid) )),
               child: ListTile(
-                title: Text(user.name,style: TextStyle(fontSize: 18),),
+                title: Text(user.name,style: const TextStyle(fontSize: 18),),
                 leading: CircleAvatar(backgroundImage: NetworkImage(user.imagePath),),
               ),
             );

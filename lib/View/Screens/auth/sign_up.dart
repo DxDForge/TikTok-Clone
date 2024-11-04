@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_proved/Controller/auth_controller.dart';
 import 'package:news_proved/View/Screens/auth/sing_in.dart';
+import 'package:news_proved/constant.dart';
 
 class SignUpPage extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
@@ -14,6 +15,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: backgroundColor,
         body: Obx(() => authController.isLoading.value
             ? const Center(
                 child: CircularProgressIndicator()) // Loading indicator
@@ -22,6 +24,23 @@ class SignUpPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      "N-Proved",
+                      style: TextStyle(
+                          color: buttonColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 60),
+                    ),
+                    const Text('Create a new account',
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20)),
+                    const Text('it\'s easy & quick ',
+                        style: TextStyle(color: Colors.white60, fontSize: 15)),
+                    const SizedBox(
+                      height: 40,
+                    ),
                     Stack(
                       children: [
                         const CircleAvatar(
@@ -39,40 +58,46 @@ class SignUpPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     // Name Input Field
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                           controller: name,
                           decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.person),
                             labelText: 'Name',
                           )),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
 
                     // Email Input Field
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                           controller: email,
                           decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.email),
                             labelText: 'Email',
                           )),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
 
                     // Password Input Field
-                    TextField(
-                        obscureText: true,
-                        controller: password,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.lock),
-                          labelText: 'Password',
-                        )),
-                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                          obscureText: true,
+                          controller: password,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.lock),
+                            labelText: 'Password',
+                          )),
+                    ),
+                    const SizedBox(height: 30),
 
                     // Sign Up Button
                     InkWell(
@@ -81,18 +106,24 @@ class SignUpPage extends StatelessWidget {
                             email.text,
                             password.text,
                             name.text,
-                            authController.profile_Pic);
+                            authController.profile_pic);
                       },
-                      child: Container(
-                          color: Colors.red,
-                          height: 40,
-                          child: const Center(
-                              child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ))),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.red,
+                            ),
+                            height: 60,
+                            child: const Center(
+                                child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ))),
+                      ),
                     ),
                     const SizedBox(height: 40),
 
@@ -100,7 +131,10 @@ class SignUpPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Already have an account? "),
+                        const Text(
+                          "Already have an account? ",
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
                         InkWell(
                           onTap: () {
                             Navigator.push(
@@ -109,7 +143,7 @@ class SignUpPage extends StatelessWidget {
                                     builder: (context) => SignInPage()));
                           },
                           child: const Text(
-                            'Sign In',
+                            ' Sign In',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, color: Colors.red),
                           ),

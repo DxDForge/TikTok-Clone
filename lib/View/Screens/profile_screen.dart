@@ -6,7 +6,7 @@ import 'package:news_proved/constant.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-   ProfileScreen({super.key,required this.uid});
+   const ProfileScreen({super.key,required this.uid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -117,7 +117,7 @@ void initState() {
                           },
                           child:  Text(
                             widget.uid == authController.user.uid?'Sing Out':profileController.user['isFollowing']?'Unfollow':'Follow',
-                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                           
                             )),
                       ),

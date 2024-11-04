@@ -9,79 +9,134 @@ import 'package:news_proved/constant.dart';
 class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({super.key});
 
-
-  //pick Video
-  Future pickVideo(ImageSource src,BuildContext context)async{
-    final  pickedVideo = await ImagePicker().pickVideo(source:ImageSource.gallery);
-    if (pickedVideo !=null) {
-      Get.snackbar('Video Picked', "Video Picked From the Gallery");
-       // ignore: use_build_context_synchronously
-       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  ConfirmVideoScreen(videoFile: File(pickedVideo.path),videoPath: pickedVideo.path,),));
-
-    }else{
-      Get.snackbar('Error', "Try Again...video not picked");
+  // Pick Video
+  Future pickVideo(ImageSource src, BuildContext context) async {
+    final pickedVideo = await ImagePicker().pickVideo(source: src);
+    if (pickedVideo != null) {
+      Get.snackbar(
+        'Video Picked',
+        "Video picked from the ${src == ImageSource.gallery ? 'Gallery' : 'Camera'}",
+        // snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black87,
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
+      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ConfirmVideoScreen(
+          videoFile: File(pickedVideo.path),
+          videoPath: pickedVideo.path,
+        ),
+      ));
+    } else {
+      Get.snackbar(
+        'Error',
+        "Try Again... video not picked",
+        // snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
+      );
     }
-
-
-
   }
-  //show dailogbox ->
-  showDailgoBox(context ){
-    showDialog(context: context, builder: (context)=> SimpleDialog(
+
+  // Show Dialog Box
+  showDialogBox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: const Text(
+          'Select Video Source',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
         children: [
-           SimpleDialogOption(
-            onPressed: ()=>pickVideo(ImageSource.gallery,context),
-            child: const Row(
+          SimpleDialogOption(
+            onPressed: () => pickVideo(ImageSource.gallery, context),
+            child: Row(
               children: [
-                Icon(Icons.image),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('Gallery'),
+                Icon(Icons.image, color: buttonColor),
+                const SizedBox(width: 10),
+                const Text(
+                  'Gallery',
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ],
             ),
-            
           ),
           SimpleDialogOption(
-              onPressed: ()=>pickVideo(ImageSource.camera,context),
-            child: const Row(
+            onPressed: () {
+              pickVideo(ImageSource.camera, context);
+              Navigator.of(context).pop();
+            },
+            child: Row(
               children: [
-                Icon(Icons.camera_alt),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('Camera'),
+                Icon(Icons.camera_alt, color: buttonColor),
+                const SizedBox(width: 10),
+                const Text(
+                  'Camera',
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ],
             ),
           ),
-             SimpleDialogOption(
-              onPressed: ()=>Navigator.of(context).pop(),
+          SimpleDialogOption(
+            onPressed: () => Navigator.of(context).pop(),
             child: const Row(
               children: [
-                Icon(Icons.cancel),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text('Cancel'),
+                Icon(Icons.cancel, color: Colors.redAccent),
+                SizedBox(width: 10),
+                Text(
+                  'Cancel',
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
               ],
             ),
           ),
         ],
-    ));
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Center(
         child: InkWell(
-          onTap: ()=>showDailgoBox(context),
+          onTap: () => showDialogBox(context),
+          borderRadius: BorderRadius.circular(25),
           child: Container(
-            height: 50,
-            width: 150,
-            color: buttonColor,
-            child: const Center(child: Text("Add Video",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold,color: Colors.white),)),
-            
+            height: 55,
+            width: 160,
+            decoration: BoxDecoration(
+              color: buttonColor,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 5),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                "Add Video",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
         ),
       ),

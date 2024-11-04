@@ -4,6 +4,7 @@ class CommentModel {
   String? id;
   String? uid;
   String? userName;
+  // ignore: prefer_typing_uninitialized_variables
   final datePublished;
   String? profilePic;
   String comment;

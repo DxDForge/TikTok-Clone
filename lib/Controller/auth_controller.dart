@@ -11,81 +11,87 @@ import 'package:news_proved/constant.dart';
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
-    // Get the currently signed-in user
-    User? currentUser = FirebaseAuth.instance.currentUser;
+  // Get the currently signed-in user
+  User? currentUser = FirebaseAuth.instance.currentUser;
   late Rx<User?> _user;
-  RxBool isLoading = false.obs;  // For showing loading states
+  RxBool isLoading = false.obs; // For showing loading states
   late Rx<File?> _pickedFile;
-  File? get profile_Pic => _pickedFile.value;
-  User get user =>_user.value!;
-  
+  File? get profile_pic => _pickedFile.value;
+  User get user => _user.value!;
 
- @override
- void onReady() {
-   super.onReady();
-   _user =Rx(firebaseAuth.currentUser);
-   _user.bindStream(firebaseAuth.authStateChanges());
-   ever(_user, initializeScreen);
- }
-initializeScreen(User? user){
-  if (user != null){
-    Get.offAll(()=>const HomeScreen());
-  }else{
-    Get.offAll(()=>SignInPage());
+  @override
+  void onReady() {
+    super.onReady();
+    _user = Rx(firebaseAuth.currentUser);
+    _user.bindStream(firebaseAuth.authStateChanges());
+    ever(_user, initializeScreen);
   }
-}
 
-
-
-
-
+  initializeScreen(User? user) {
+    if (user != null) {
+      Get.offAll(() => const HomeScreen());
+    } else {
+      Get.offAll(() => SignInPage());
+    }
+  }
 
   //pick image
-  Future pickImage()async{
-    final  pickedImage = await
-    ImagePicker().pickImage(source:ImageSource.gallery);
+  Future pickImage() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       _pickedFile = Rx(File(pickedImage.path));
       Get.snackbar('Profile Pic', 'pic successfully picked');
-    }else{
-      Get.snackbar('Pic Not Selected', 'select a pic to upload',);
+    } else {
+      Get.snackbar(
+        'Pic Not Selected',
+        'select a pic to upload',
+      );
     }
-
-
   }
-      //upload it to the firebase storage
-    Future<String> uploadImageToFirestore(File image)async{
 
-      Reference ref =  firebaseStorage.ref().child('Profile Pic').child(firebaseAuth.currentUser!.uid);
+  //upload it to the firebase storage
+  Future<String> uploadImageToFirestore(File image) async {
+    Reference ref = firebaseStorage
+        .ref()
+        .child('Profile Pic')
+        .child(firebaseAuth.currentUser!.uid);
 
-      UploadTask uploadTask = ref.putFile(image); //uploading
-      TaskSnapshot snap =await uploadTask; //takin sanp of file
-      String downloadUrl =await snap.ref.getDownloadURL(); //get download url
-      return downloadUrl;
+    UploadTask uploadTask = ref.putFile(image); //uploading
+    TaskSnapshot snap = await uploadTask; //takin sanp of file
+    String downloadUrl = await snap.ref.getDownloadURL(); //get download url
+    return downloadUrl;
+  }
 
-
-    }
   // User Registration Method
-  Future<void> userRegistration(String email, String password, String name,File? image) async {
+  Future<void> userRegistration(
+      String email, String password, String name, File? image) async {
     isLoading.value = true;
     try {
-      if (email.isNotEmpty && password.isNotEmpty && name.isNotEmpty && image != null) {
+      if (email.isNotEmpty &&
+          password.isNotEmpty &&
+          name.isNotEmpty &&
+          image != null) {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
-            email: email,
-            password: password,
+          email: email,
+          password: password,
         );
 
-       String downloadUrl =await uploadImageToFirestore(image);
+        String downloadUrl = await uploadImageToFirestore(image);
 
         UserModel userModel = UserModel(
-            uid: cred.user!.uid,
-            email: email,
-            name: name,
-            imagePath: downloadUrl,
+          uid: cred.user!.uid,
+          email: email,
+          name: name,
+          imagePath: downloadUrl,
         );
 
-        await firebaseFirestore.collection('Users').doc(cred.user!.uid).set(userModel.tojson());
-        Get.snackbar('Success', 'Successfully registered and stored in Firestore');
+        await firebaseFirestore
+            .collection('Users')
+            .doc(cred.user!.uid)
+            .set(userModel.tojson());
+        Get.snackbar(
+            'Success', 'Successfully registered and stored in Firestore');
       } else {
         Get.snackbar('Error', 'All fields are required');
       }
@@ -98,14 +104,12 @@ initializeScreen(User? user){
 
   // User Login Method
   Future<void> userLogin(String email, String password) async {
-
-
     isLoading.value = true;
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
-            email: email,
-            password: password,
+          email: email,
+          password: password,
         );
         Get.snackbar('Login Successful', 'You are now logged in');
       } else {
@@ -119,7 +123,7 @@ initializeScreen(User? user){
   }
 
   //logout
-  logOut()async{
-   await firebaseAuth.signOut();
+  logOut() async {
+    await firebaseAuth.signOut();
   }
 }
